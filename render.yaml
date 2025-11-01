@@ -1,5 +1,25 @@
 services:
-  # Web Service (Next.js App)
+  # PostgreSQL Database (Create this FIRST)
+  - type: pserv
+    name: rhp-therapy-db
+    env: docker
+    plan: free
+    region: frankfurt
+    image:
+      url: postgres:16-alpine
+    disk:
+      name: rhp-therapy-db-disk
+      mountPath: /var/lib/postgresql/data
+      sizeGB: 1
+    envVars:
+      - key: POSTGRES_DB
+        value: rhptherapy
+      - key: POSTGRES_USER
+        value: rhptherapy_user
+      - key: POSTGRES_PASSWORD
+        generateValue: true
+
+  # Web Service (Next.js App) - Create AFTER database
   - type: web
     name: rhp-therapy-web
     env: node
